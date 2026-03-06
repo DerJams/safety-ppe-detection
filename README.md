@@ -1,44 +1,52 @@
-# Construction Site Safety: PPE Detection System
+# Construction Site Safety: Real-Time PPE Detection
+### *Automated Safety Compliance using YOLOv8*
 
-This project implements a real-time computer vision system to detect personal protective equipment (PPE) on construction sites. It utilizes the **YOLOv8 (You Only Look Once)** architecture, fine-tuned on a custom dataset to identify "Hard Hat", "Mask", "Vest", and "Person" classes.
+This project implements a real-time computer vision system to automate safety inspections. By identifying "Hard Hat," "Vest," and "Person" classes, the system helps safety managers reduce manual oversight and improve site compliance instantly.
 
-## 🎯 Objective
-To automate safety compliance monitoring by instantly identifying workers who are missing required safety gear.
+## 🚀 Business Value
+
+* **Insurance Compliance:** Provides a verifiable log of safety gear usage.
+* **Risk Mitigation:** Real-time alerts for workers missing critical PPE.
+* **Scalability:** Designed to integrate with existing CCTV infrastructure via a modular Python API.
+
+---
+
+## 📊 Performance & Insights
+
+The model was fine-tuned on a custom dataset for 15 epochs using a T4 GPU. 
+
+| Class | Images | Precision (P) | Recall (R) | mAP@0.5 |
+| :--- | :--- | :--- | :--- | :--- |
+| **All Classes** | 603 | **0.890** | **0.838** | **0.888** |
+| **Safety Vest** | 601 | 0.915 | 0.904 | **0.942** |
+| **Helmet** | 555 | 0.852 | 0.714 | 0.798 |
+
+> **Analysis:** The system is exceptionally reliable at detecting safety vests (0.94 mAP). While helmet detection is slightly lower (0.79 mAP) due to smaller object scales in wide-angle site photos, the overall precision of 0.89 ensures a low false-alarm rate for automated monitoring.
+
+---
 
 ## 🛠️ Tech Stack
-* **Model Architecture:** YOLOv8 (Nano)
-* **Framework:** PyTorch & Ultralytics
-* **Data Management:** Roboflow
-* **Training Environment:** Google Colab (T4 GPU)
 
-## 📊 Performance
-The model was trained for 15 epochs on a T4 GPU. The final evaluation on the validation set yielded the following metrics:
+* **Architecture:** YOLOv8 (Nano) — Optimized for edge deployment.
+* **Framework:** PyTorch & Ultralytics.
+* **Environment:** Data managed via Roboflow; trained on Google Colab.
 
-| Class | Images | Instances | Precision (P) | Recall (R) | mAP@0.5 |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| **All Classes** | 603 | 4668 | **0.890** | **0.838** | **0.888** |
-| Helmet | 555 | 1174 | 0.852 | 0.714 | 0.798 |
-| Person | 593 | 1759 | 0.903 | 0.895 | 0.925 |
-| Vest | 601 | 1735 | 0.915 | 0.904 | 0.942 |
+---
 
-### Key Insights
-* **High Accuracy on Safety Gear:** The model performs exceptionally well at detecting safety vests, achieving a **0.942 mAP**.
-* **Reliable Detection:** With a precision of **0.89**, the system maintains a low false-positive rate, which is critical for automated safety monitoring.
-* **Room for Improvement:** Detection of helmets (**0.798 mAP**) was slightly lower than other classes, likely due to their smaller scale in long-distance site photos.
+## 📂 Implementation & Usage
 
-## 🚀 Usage
+The system is designed to be "plug-and-play" for developers or site engineers.
 
-### 1. Install Dependencies
+### 1. Installation
+
+```bash
 pip install ultralytics
 
-### 2. Run Inference
 from ultralytics import YOLO
 
-# Load the trained model
+# Load the production-ready weights
 model = YOLO("best.pt")
 
-# Predict on an image
-model.predict("test_image.jpg", save=True)
+# Predict and save results
+model.predict("construction_site.jpg", save=True, conf=0.5)
 
-## 📂 Dataset
-The dataset was sourced from Roboflow Universe and contains annotated images of construction workers. It includes varying lighting conditions and angles to ensure model robustness.
